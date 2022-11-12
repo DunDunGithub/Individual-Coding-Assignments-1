@@ -25,6 +25,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.customnavigationdrawer.fragment.ChangePasswordFragment;
 import com.example.customnavigationdrawer.fragment.FavouriteFragment;
 import com.example.customnavigationdrawer.fragment.HistoryFragment;
 import com.example.customnavigationdrawer.fragment.HomeFragment;
@@ -41,6 +42,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private static final int FRAGMENT_FAVOURITE = 1;
     private static final int FRAGMENT_HISTORY = 2;
     private static final int FRAGMENT_MY_PROFILE = 3;
+    private static final int FRAGMENT_CHANGE_PASSWORD = 4;
     public static final int MY_REQUEST_CODE = 10;
 
     private int mCurrentFragment = FRAGMENT_HOME;
@@ -130,6 +132,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             if(mCurrentFragment != FRAGMENT_MY_PROFILE){
                 replaceFragment(mMyProfileFragment);
                 mCurrentFragment = FRAGMENT_MY_PROFILE;
+            }
+        }else if(id == R.id.nav_change_password){
+            if(mCurrentFragment != FRAGMENT_CHANGE_PASSWORD){
+                replaceFragment(new ChangePasswordFragment());
+                mCurrentFragment = FRAGMENT_CHANGE_PASSWORD;
             }
         }
 
