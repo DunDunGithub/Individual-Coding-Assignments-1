@@ -33,10 +33,11 @@ import com.google.firebase.auth.UserProfileChangeRequest;
 
 public class MyProfileFragment extends Fragment {
 
+    private static final String TAG = "UpdateEmail";
     private View mView;
     private ImageView imgSetAvatar;
     private EditText edtSetFullName, edtSetEmail;
-    private Button btnUpdateProfile;
+    private Button btnUpdateProfile, btnUpdateEmail;
     private Uri mUri;
     private MainActivity mMainActivity;
     private ProgressDialog progressDialog;
@@ -61,6 +62,7 @@ public class MyProfileFragment extends Fragment {
         edtSetEmail = mView.findViewById(R.id.edt_setEmail);
         edtSetFullName = mView.findViewById(R.id.edt_setName);
         btnUpdateProfile = mView.findViewById(R.id.btn_update_profile);
+        btnUpdateEmail = mView.findViewById(R.id.btn_update_email);
     }
 
     private void setUserInformation() {
@@ -86,6 +88,13 @@ public class MyProfileFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 onClickUpdateProfile();
+            }
+        });
+
+        btnUpdateEmail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onClickUpdateEmail();
             }
         });
     }
@@ -148,5 +157,30 @@ public class MyProfileFragment extends Fragment {
                 });
     }
 
+    private void onClickUpdateEmail() {
+        String strNewEmail = edtSetEmail.getText().toString().trim();
+        progressDialog.setTitle("Updating your email");
+        progressDialog.show();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        user.updateEmail(strNewEmail)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        progressDialog.cancel();
+                        if (task.isSuccessful()) {
+                            Toast.makeText(getActivity(), "User email address updated.", Toast.LENGTH_SHORT).show();
+                            mMainActivity.showUserInformation();
+                        }
+                        else{
+                            try {
+                                throw task.getException();
+                            } catch(Exception e) {
+                                Log.e(TAG, e.getMessage());
+                            }
+                        }
+                    }
+                });
+    }
 
 }
